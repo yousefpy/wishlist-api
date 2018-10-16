@@ -10,7 +10,7 @@ class AddedBySerializer(serializers.ModelSerializer):
 
 
 class ItemListSerializer(serializers.ModelSerializer):
-    wish_for = serializers.SerializerMethodField()
+    item_wish_count = serializers.SerializerMethodField()
     detail = serializers.HyperlinkedIdentityField(
         view_name = 'item-detail',
         lookup_field = 'id',
@@ -19,10 +19,10 @@ class ItemListSerializer(serializers.ModelSerializer):
     added_by = AddedBySerializer()
     class Meta:
         model = Item
-        fields = ['image', 'added_by', 'name', 'detail', 'wish_for']
+        fields = ['image', 'added_by', 'name', 'detail', 'item_wish_count']
     
-    def get_wish_for(self, obj):
-        return "Wish for %s"%(obj.name)
+    def get_item_wish_count(self, obj):
+        return "This item has been wished by %s users"%(obj.favoriteitem_set.count())
 
 class ItemDetailSerializer(serializers.ModelSerializer):
     class Meta:
